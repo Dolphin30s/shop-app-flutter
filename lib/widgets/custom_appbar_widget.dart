@@ -28,7 +28,7 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                 onPressed: () =>
                     Navigator.of(context).pushNamed(CartScreen.route),
                 icon: const Icon(Icons.shopping_cart)),
-            Positioned(top: 0, right: 3, child: CartIconWithCountWidget()),
+            const Positioned(top: 0, right: 3, child: CartIconWithCountWidget()),
           ],
         )
       ],

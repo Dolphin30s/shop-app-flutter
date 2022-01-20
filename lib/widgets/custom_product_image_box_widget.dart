@@ -5,9 +5,8 @@ import 'package:open_cart/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class CustomProductImageBox extends StatelessWidget {
-  const CustomProductImageBox({Key? key, required this.index})
-      : super(key: key);
-  final int index;
+  const CustomProductImageBox({Key? key, required this.map}) : super(key: key);
+  final Map map;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class CustomProductImageBox extends StatelessWidget {
           borderRadius: bRC20,
           image: DecorationImage(
             image: NetworkImage(
-              provider.foodList[index].foodImageUrl.toString(),
+              map["foodImageUrl"].toString(),
             ),
           ),
         ),

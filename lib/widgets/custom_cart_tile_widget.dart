@@ -24,8 +24,9 @@ class CustomCartTileWidget extends StatelessWidget {
           style: tsCFFS20W500,
         ),
         trailing: IconButton(
-          onPressed: () {
-            provider.deleteProduct(index);
+          onPressed: () async {
+            await provider.deleteProduct(index);
+            await provider.fetchProducts();
           },
           icon: Icon(
             Icons.delete,

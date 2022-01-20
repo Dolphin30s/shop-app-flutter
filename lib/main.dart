@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:open_cart/providers/auth_provider.dart';
 import 'package:open_cart/providers/cart_provider.dart';
 import 'package:open_cart/screens/home_page_screen.dart';
-import 'package:open_cart/screens/splash_screen.dart';
 import 'package:open_cart/utils/routes.dart';
 import 'package:open_cart/utils/themes.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: mainAppTheme,
             routes: routes,
-            initialRoute: SplashScreen.route,
+            initialRoute: HomeScreen.route,
           );
         }
       },

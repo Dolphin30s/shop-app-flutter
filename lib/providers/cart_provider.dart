@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:open_cart/models/cart_model.dart';
 import 'package:open_cart/providers/_mixins.dart';
 import 'package:open_cart/providers/base_provider.dart';
-import 'package:open_cart/screens/cart_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider extends BaseProvider with MixinProgressProvider {
@@ -16,6 +15,8 @@ class CartProvider extends BaseProvider with MixinProgressProvider {
     _cartList = val;
     notifyListeners();
   }
+
+  double totalAmount = 0.0;
 
   Future<CartModel?> fetchProducts() async {
     isLoading = true;
@@ -60,9 +61,7 @@ class CartProvider extends BaseProvider with MixinProgressProvider {
       'productPrice': productPrice,
       'productName': productId,
       'productImage': productImage,
-    }).then((value) {
-      print('');
-    });
+    }).then((value) {});
   }
 
   Future<void> deleteProduct(index) async {
@@ -70,4 +69,8 @@ class CartProvider extends BaseProvider with MixinProgressProvider {
     String docId = (cart.docs.elementAt(index).id);
     return FirebaseFirestore.instance.collection("cart").doc(docId).delete();
   }
+
+
+
+
 }

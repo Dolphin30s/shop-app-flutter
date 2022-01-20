@@ -35,7 +35,7 @@ class LoginButtonWidget extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Dont have an account?'),
+                        const Text('Dont have an account?'),
                         TextButton(
                           onPressed: () {
                             Navigator.of(context)

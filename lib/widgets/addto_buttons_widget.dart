@@ -11,11 +11,11 @@ class AddToButtonsWidget extends StatelessWidget {
   const AddToButtonsWidget({
     Key? key,
     required this.deviceSize,
-    required this.index,
+    required this.map,
   }) : super(key: key);
 
   final Size deviceSize;
-  final int index;
+  final Map map;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,9 @@ class AddToButtonsWidget extends StatelessWidget {
             onTap: () {
               print('Added to wishlist');
               FavouritesProvider().addProductToFavourites(
-                  productId: provider.favouritesList[index].productName,
-                  productPrice: provider.favouritesList[index].productPrice,
-                  productImage: provider.favouritesList[index].productImage);
+                  productId: map["foodName"],
+                  productPrice: map["foodprice"],
+                  productImage: map["foodImageUrl"]);
             },
             child: Container(
               height: 50,
@@ -43,9 +43,19 @@ class AddToButtonsWidget extends StatelessWidget {
             onTap: () {
               print('Added to cart');
               CartProvider().addProductToCart(
-                  productId: provider.foodList[index].foodName,
-                  productPrice: provider.foodList[index].foodprice,
-                  productImage: provider.foodList[index].foodImageUrl);
+                  productId: map["foodName"],
+                  productPrice: map["foodprice"],
+                  productImage: map["foodImageUrl"]);
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.of(context).pop(true);
+                    });
+                    return const AlertDialog(
+                      title: Text('Added To Cart!'),
+                    );
+                  });
             },
             child: Container(
                 height: 50,

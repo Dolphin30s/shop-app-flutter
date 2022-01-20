@@ -21,7 +21,7 @@ class SignuporinTextButtonWidget extends StatelessWidget {
           style: tsCwhiteFFPrimaryS15,
         ),
         TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pushReplacementNamed(route);
             },
             child: Text(

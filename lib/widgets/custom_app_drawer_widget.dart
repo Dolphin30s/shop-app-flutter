@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:open_cart/screens/my_account_screen.dart';
 import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/styles.dart';
 import 'package:open_cart/widgets/drawer_tile_custom_widget.dart';
@@ -30,7 +31,7 @@ class CustomAppDrawerWidget extends StatelessWidget {
             title: 'My Account',
             iconData: Icons.person,
             onPressed: () {
-              print('test2');
+              Navigator.of(context).pushNamed(MyAccountScreen.route);
             },
           ),
           DrawerTileCustomWidget(

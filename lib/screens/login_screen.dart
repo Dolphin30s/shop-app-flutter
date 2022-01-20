@@ -6,7 +6,7 @@ import 'package:open_cart/utils/form_validators.dart';
 import 'package:open_cart/utils/sized_box_custom.dart';
 import 'package:open_cart/utils/styles.dart';
 import 'package:open_cart/widgets/auth_page_header_widget.dart';
-import 'package:open_cart/widgets/auth_page_login_button_widget.dart'; 
+import 'package:open_cart/widgets/auth_page_login_button_widget.dart';
 import 'package:open_cart/widgets/signup_text_button_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -41,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                // child: LoginFormWidget(),
                 child: Form(
                   key: _formKey,
                   child: Column(

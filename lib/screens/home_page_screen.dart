@@ -91,17 +91,14 @@ class _RedirectionScreenState extends State<RedirectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorDarkGrey,
-      body: Center(
-        child: CircularProgressIndicator(
-          color: colorOrangeCustom,
-        ),
-      ),
-    );
+        backgroundColor: colorDarkGrey,
+        body: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: CartScreen()));
   }
 
   _initAsync() async {
     // await Future.delayed(const Duration(milliseconds: 100));
-    Navigator.of(context).pushReplacementNamed(CartScreen.route);
+    Navigator.of(context).pushNamed(CartScreen.route);
   }
 }

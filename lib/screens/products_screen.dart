@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:open_cart/providers/food_items_provider.dart';
 import 'package:open_cart/screens/product_detail_screen.dart';
-import 'package:open_cart/utils/colors.dart'; 
+import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/sized_box_custom.dart';
-import 'package:open_cart/utils/styles.dart'; 
+import 'package:open_cart/utils/styles.dart';
 import 'package:open_cart/widgets/custom_product_image_box_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -46,31 +46,32 @@ class _ProductsScreenState extends State<ProductsScreen> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                // const CustomCartAppBarWidget(),
                 Consumer<FoodProvider>(builder: (context, provider, _) {
+                  List _foodList = provider.foodList;
                   return Container(
                     color: colorDarkGrey,
                     height: deviceSize.height,
                     width: deviceSize.width,
                     child: ListView.builder(
-                      itemCount: _foodProvider.foodList.length,
+                      itemCount: _foodList.length,
                       itemBuilder: (context, index) {
+                        Map<String, dynamic> map = _foodList[index].toMap();
                         return SizedBox(
                           width: double.infinity,
                           height: 150,
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).pushNamed(
                                 ProductDetailScreen.route,
-                                arguments: index),
+                                arguments: map),
                             child: Row(
                               children: [
                                 Expanded(
                                   child: ProductDetailsWidget(
-                                    index: index,
+                                    map: map,
                                   ),
                                 ),
                                 CustomProductImageBox(
-                                  index: index,
+                                  map: map,
                                 ),
                               ],
                             ),
@@ -94,8 +95,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
 }
 
 class ProductDetailsWidget extends StatelessWidget {
-  const ProductDetailsWidget({Key? key, required this.index}) : super(key: key);
-  final int index;
+  const ProductDetailsWidget({Key? key, required this.map}) : super(key: key);
+  final Map map;
 
   @override
   Widget build(BuildContext context) {
@@ -106,21 +107,16 @@ class ProductDetailsWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 border: Border.all(
-                    color: provider.foodList[index].isVeg
-                        ? Colors.green
-                        : colorRed,
-                    width: 1)),
+                    color: map["isVeg"] ? Colors.green : colorRed, width: 1)),
             width: 20,
             height: 20,
             child: Center(
               child: Icon(Icons.circle,
-                  size: 15,
-                  color:
-                      provider.foodList[index].isVeg ? Colors.green : colorRed),
+                  size: 15, color: map["isVeg"] ? Colors.green : colorRed),
             ),
           ),
           Text(
-            provider.foodList[index].foodName,
+            map["foodName"],
             style: tsCOrangeCustomFFPrimaryS20,
           ),
           const SBH5(),
@@ -131,7 +127,7 @@ class ProductDetailsWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    provider.foodList[index].foodRating.toString(),
+                    map["foodRating"].toString(),
                     style: tsCwhiteFFPrimaryS15,
                   ),
                   const SBW5(),
@@ -144,14 +140,14 @@ class ProductDetailsWidget extends StatelessWidget {
               ),
               const SBW5(),
               Text(
-                "${provider.foodList[index].foodPrepTime.toString()} mins",
+                "${map["foodPrepTime"].toString()} mins",
                 style: tsCwhiteFFPrimaryS12,
               ),
             ],
           ),
           const SBH5(),
           Text(
-            provider.foodList[index].foodDetails,
+            map["foodDetails"],
             style: TextStyle(
                 fontSize: 12, color: colorFF, fontWeight: FontWeight.w400),
           ),
