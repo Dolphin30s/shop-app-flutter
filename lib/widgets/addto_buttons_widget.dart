@@ -5,6 +5,7 @@ import 'package:open_cart/providers/cart_provider.dart';
 import 'package:open_cart/providers/favourites_provider.dart';
 import 'package:open_cart/providers/food_items_provider.dart';
 import 'package:open_cart/utils/colors.dart';
+import 'package:open_cart/utils/dialog_boxes.dart';
 import 'package:provider/provider.dart';
 
 class AddToButtonsWidget extends StatelessWidget {
@@ -46,16 +47,7 @@ class AddToButtonsWidget extends StatelessWidget {
                   productId: map["foodName"],
                   productPrice: map["foodprice"],
                   productImage: map["foodImageUrl"]);
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    Future.delayed(const Duration(seconds: 1), () {
-                      Navigator.of(context).pop(true);
-                    });
-                    return const AlertDialog(
-                      title: Text('Added To Cart!'),
-                    );
-                  });
+              showAddedToCart(context);
             },
             child: Container(
                 height: 50,

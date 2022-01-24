@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:open_cart/providers/address_provider.dart';
 import 'package:open_cart/providers/cart_provider.dart';
-import 'package:open_cart/utils/colors.dart';
+import 'package:open_cart/widgets/cart_list_section_widget.dart';
 import 'package:open_cart/widgets/cart_screen_bottom_section_widget.dart';
-import 'package:open_cart/widgets/custom_cart_tile_widget.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -17,10 +17,12 @@ double counter = 0;
 
 class _CartScreenState extends State<CartScreen> {
   late CartProvider _provider;
+  late AddressProvider _addressProvider;
   final double totalAmount = 0.0;
   @override
   void initState() {
     _provider = CartProvider();
+    _addressProvider = AddressProvider();
     Future.microtask(() => _initAsync());
     super.initState();
   }
@@ -33,7 +35,6 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<CartProvider>.value(
@@ -42,49 +43,16 @@ class _CartScreenState extends State<CartScreen> {
         ],
         builder: (context, child) {
           return Scaffold(
-            bottomNavigationBar: const CartScreenBottomSectionWidget(),
-            appBar: AppBar(
-              title: const Text('My Cart'),
-            ),
-            body: _provider.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
-                    child: Container(
-                      color: colorDarkGrey,
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            height: deviceSize.height * 0.8,
-                            child: Consumer<CartProvider>(
-                                builder: (context, provider, _) {
-                              return ListView.builder(
-                                  itemCount: provider.cartList.length,
-                                  itemBuilder: (context, index) {
-                                    return Card(
-                                      color: Colors.black45,
-                                      elevation: 10,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5),
-                                        child:
-                                            CustomCartTileWidget(index: index),
-                                      ),
-                                    );
-                                  });
-                            }),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-          );
+              bottomNavigationBar: const CartScreenBottomSectionWidget(),
+              appBar: AppBar(
+                title: const Text('My Cart'),
+              ),
+              body: const CartListSectionWidget());
         });
   }
 
-  _initAsync() async {
+  void _initAsync() async {
     await _provider.fetchProducts();
+    await _addressProvider.fetchAddressDetails();
   }
 }

@@ -1,10 +1,14 @@
-// ignore_for_file: unused_field, avoid_print
+// ignore_for_file: unused_field, avoid_print, unused_import, unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:open_cart/screens/my_account_screen.dart';
+import 'package:open_cart/providers/auth_provider.dart';
+import 'package:open_cart/screens/login_screen.dart';
+import 'package:open_cart/screens/logout_screen.dart';
 import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/styles.dart';
+import 'package:open_cart/widgets/address_screen_body_widget.dart';
 import 'package:open_cart/widgets/drawer_tile_custom_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomAppDrawerWidget extends StatelessWidget {
   final bool _isLoggedIn = false;
@@ -28,17 +32,10 @@ class CustomAppDrawerWidget extends StatelessWidget {
             ),
           ),
           DrawerTileCustomWidget(
-            title: 'My Account',
-            iconData: Icons.person,
-            onPressed: () {
-              Navigator.of(context).pushNamed(MyAccountScreen.route);
-            },
-          ),
-          DrawerTileCustomWidget(
             title: 'Saved Addresses',
             iconData: Icons.home,
             onPressed: () {
-              print('test3');
+              const AddressScreenBody();
             },
           ),
           DrawerTileCustomWidget(
@@ -52,12 +49,18 @@ class CustomAppDrawerWidget extends StatelessWidget {
             onPressed: () {},
           ),
           DrawerTileCustomWidget(
-            title: 'Contact us',
+            title: 'Logout',
             iconData: Icons.login,
-            onPressed: () {},
+            onPressed: () async {
+              final prefs = await SharedPreferences.getInstance();
+              // prefs.remove('userId');
+              // prefs.setBool('isLogin', false);
+              Navigator.of(context).pushReplacementNamed(LogoutScreen.route);
+            },
           ),
         ],
       ),
     ));
   }
 }
+

@@ -80,7 +80,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         });
   }
 
-  _initAsync() async {
+  void _initAsync() async {
     await _foodProvider.fetchProducts();
     await _cartProvider.fetchProducts();
   }

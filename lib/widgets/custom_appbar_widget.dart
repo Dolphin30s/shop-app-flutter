@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:open_cart/screens/cart_screen.dart';
-import 'package:open_cart/widgets/custom_sliver_appbar_widget.dart';
 
 class CustomAppBarWidget extends StatefulWidget {
   const CustomAppBarWidget({
@@ -22,15 +21,9 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
         onPressed: () => Navigator.of(context).pop(),
       ),
       actions: [
-        Stack(
-          children: [
-            IconButton(
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(CartScreen.route),
-                icon: const Icon(Icons.shopping_cart)),
-            const Positioned(top: 0, right: 3, child: CartIconWithCountWidget()),
-          ],
-        )
+        IconButton(
+            onPressed: () => Navigator.of(context).pushNamed(CartScreen.route),
+            icon: const Icon(Icons.shopping_cart))
       ],
     );
   }

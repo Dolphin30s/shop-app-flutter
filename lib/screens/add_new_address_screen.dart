@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:open_cart/providers/address_provider.dart';
-import 'package:open_cart/screens/add_new_address_screen.dart';
-import 'package:open_cart/widgets/address_screen_body_widget.dart';
+import 'package:open_cart/widgets/add_new_address_screen_body_widget.dart';
+import 'package:open_cart/widgets/add_new_address_screen_bottom_navbar_widget.dart';
 import 'package:provider/provider.dart';
 
-class AddressScreen extends StatefulWidget {
-  static const String route = '/address_screen';
-  const AddressScreen({Key? key}) : super(key: key);
+class AddNewAddressScreen extends StatefulWidget {
+  static const String route = '/add_new_address_screen';
+  const AddNewAddressScreen({Key? key}) : super(key: key);
 
   @override
-  _AddressScreenState createState() => _AddressScreenState();
+  _AddNewAddressScreenState createState() => _AddNewAddressScreenState();
 }
 
 final TextEditingController addressline1Controller = TextEditingController();
@@ -19,7 +19,7 @@ final TextEditingController addressline2Controller = TextEditingController();
 final TextEditingController cityController = TextEditingController();
 final TextEditingController pincodeController = TextEditingController();
 
-class _AddressScreenState extends State<AddressScreen> {
+class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   late AddressProvider _addressProvider;
   @override
   void initState() {
@@ -30,19 +30,18 @@ class _AddressScreenState extends State<AddressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size deviceSize = MediaQuery.of(context).size;
     return MultiProvider(
         providers: [ChangeNotifierProvider.value(value: _addressProvider)],
         builder: (context, _) {
-          return Consumer<AddressProvider>(builder: (context, provider, _) {
-            return provider.addressList.isEmpty
-                ? const AddNewAddressScreen()
-                : Scaffold(
-                    // bottomNavigationBar: AddressPageBottomNavbarWidget(deviceSize: deviceSize),
-                    appBar: AppBar(
-                      title: const Text('Adding your delivery address'),
-                    ),
-                    body: const AddressScreenBody());
-          });
+          return Scaffold(
+            bottomNavigationBar:
+                AddNewAdressScreenBottomNavBarWidget(deviceSize: deviceSize),
+            appBar: AppBar(
+              title: const Text('Adding your delivery address'),
+            ),
+            body: const AddAdressFormBodyWidget(),
+          );
         });
   }
 

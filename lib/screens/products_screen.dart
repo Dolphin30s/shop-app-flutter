@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:open_cart/providers/food_items_provider.dart';
 import 'package:open_cart/screens/product_detail_screen.dart';
 import 'package:open_cart/utils/colors.dart';
+import 'package:open_cart/utils/constants.dart';
 import 'package:open_cart/utils/sized_box_custom.dart';
 import 'package:open_cart/utils/styles.dart';
-import 'package:open_cart/widgets/custom_product_image_box_widget.dart';
 import 'package:provider/provider.dart';
 
-class ProductsScreen extends StatefulWidget {
+class BurgersScreen extends StatefulWidget {
   static const String route = '/produtsScreen';
-  const ProductsScreen({Key? key}) : super(key: key);
+  const BurgersScreen({Key? key}) : super(key: key);
 
   @override
-  _ProductsScreenState createState() => _ProductsScreenState();
+  _BurgersScreenState createState() => _BurgersScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
+class _BurgersScreenState extends State<BurgersScreen> {
   late FoodProvider _foodProvider;
 
   @override
@@ -66,11 +66,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: ProductDetailsWidget(
+                                  child: _BurgersScreenProductDetailsWidget(
                                     map: map,
                                   ),
                                 ),
-                                CustomProductImageBox(
+                                _BurgerScreenProductImageBox(
                                   map: map,
                                 ),
                               ],
@@ -89,13 +89,37 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
-  _initAsync() async {
+  void _initAsync() async {
     await _foodProvider.fetchProducts();
   }
 }
+class _BurgerScreenProductImageBox extends StatelessWidget {
+  const _BurgerScreenProductImageBox({Key? key, required this.map}) : super(key: key);
+  final Map map;
 
-class ProductDetailsWidget extends StatelessWidget {
-  const ProductDetailsWidget({Key? key, required this.map}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<FoodProvider>(builder: (context, provider, _) {
+      return Container(
+        height: 100,
+        width: 100,
+        decoration: BoxDecoration(
+          color: colorFF,
+          borderRadius: bRC20,
+          image: DecorationImage(
+            image: NetworkImage(
+              map["foodImageUrl"].toString(),
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.all(5),
+      );
+    });
+  }
+}
+
+class _BurgersScreenProductDetailsWidget extends StatelessWidget {
+  const _BurgersScreenProductDetailsWidget({Key? key, required this.map}) : super(key: key);
   final Map map;
 
   @override

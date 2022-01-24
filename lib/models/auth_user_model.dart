@@ -4,15 +4,15 @@ class AuthUserModel {
   AuthUserModel({
     // required this.name,
     // required this.job,
-    required this.id,
+     this.id,
     // required this.createdAt,
-    required this.token,
+     this.token,
   });
 
   // String name;
   // String job;
-  String id;
-  var token;
+  String? id;
+   String? token;
   // DateTime createdAt;
 
   factory AuthUserModel.fromJson(Map<String, dynamic> json) => AuthUserModel(

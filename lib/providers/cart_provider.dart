@@ -67,6 +67,7 @@ class CartProvider extends BaseProvider with MixinProgressProvider {
   Future<void> deleteProduct(index) async {
     final cart = await FirebaseFirestore.instance.collection("cart").get();
     String docId = (cart.docs.elementAt(index).id);
+
     return FirebaseFirestore.instance.collection("cart").doc(docId).delete();
   }
 

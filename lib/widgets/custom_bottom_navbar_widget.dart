@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:open_cart/screens/cart_screen.dart';
 import 'package:open_cart/utils/colors.dart';
 
-class CustomBottomNavbar extends StatefulWidget {
-  const CustomBottomNavbar({
+class MainCustomPainterBottomNavbar extends StatefulWidget {
+  const MainCustomPainterBottomNavbar({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<CustomBottomNavbar> createState() => _CustomBottomNavbarState();
+  State<MainCustomPainterBottomNavbar> createState() => _MainCustomPainterBottomNavbarState();
 }
 
-class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
+class _MainCustomPainterBottomNavbarState extends State<MainCustomPainterBottomNavbar> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -25,7 +25,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
         children: [
           CustomPaint(
             size: Size(size.width, 80),
-            painter: BNBCustomPainter(),
+            painter: _BNBCustomPainter(),
           ),
           Center(
             heightFactor: 0.6,
@@ -40,32 +40,25 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
                       color: colorOrangeCustom),
                   child: FloatingActionButton(
                       backgroundColor: colorFF,
-                      child: Icon(
-                        Icons.shopping_cart_outlined,
-                        color: colorOrangeCustom,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.favorite_outline,
+                            color: colorOrangeCustom,
+                          ),
+                          Text(
+                            'Favs',
+                            style: TextStyle(
+                                color: colorOrangeCustom, fontSize: 10),
+                          )
+                        ],
                       ),
                       elevation: 0.1,
                       onPressed: () {
                         Navigator.of(context).pushNamed(CartScreen.route);
                       }),
                 ),
-                // Positioned(
-                //   top: 0,
-                //   left: 30,
-                //   child: Consumer<CartProvider>(
-                //     builder: (context, value, child) {
-                //       return Container(
-                //         padding: EdgeInsets.all(2),
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(20),
-                //           color: Colors.red,
-                //         ),
-                //         child: Text(value.getCounter().toString(),
-                //             style: TextStyle(color: Colors.white)),
-                //       );
-                //     },
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -79,7 +72,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
                   text: 'Home',
                 ),
                 Tab(
-                  icon: Icon(Icons.store),
+                  icon: Icon(Icons.fastfood_outlined),
                   text: 'Burgers',
                 ),
                 Tab(
@@ -88,12 +81,12 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
                   ),
                 ),
                 Tab(
-                  icon: Icon(Icons.favorite_border),
-                  text: 'Favs',
+                  icon: Icon(Icons.store),
+                  text: 'Orders',
                 ),
                 Tab(
-                  icon: Icon(Icons.more),
-                  text: 'More',
+                  icon: Icon(Icons.person),
+                  text: 'Account',
                 ),
               ]),
         ],
@@ -102,7 +95,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
   }
 }
 
-class BNBCustomPainter extends CustomPainter {
+class _BNBCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()..color = colorOrangeCustom;

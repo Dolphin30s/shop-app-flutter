@@ -9,20 +9,14 @@ import 'package:open_cart/widgets/auth_page_header_widget.dart';
 import 'package:open_cart/widgets/auth_page_login_button_widget.dart';
 import 'package:open_cart/widgets/signup_text_button_widget.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   static const String route = '/LoginScreen';
 
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -46,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // WHEN EXTRACTED AS A SEPERATE WIDGET, FIELD ENTRIES ARE DISSAPEARING ON UNFOCUSING.
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         obscureText: false,
@@ -63,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SBH20(),
                       TextFormField(
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: false,
+                        obscureText: true,
                         style: tsCwhiteFFPrimaryS15,
                         controller: passwordController,
                         validator: (value) => validatePassword(value),
@@ -76,6 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SBH30(),
+                      //LOGIN BUTTON WIDGET HOLDS ALL THE FUNCTIONS AND THE LOGIN LOGIC.
                       LoginButtonWidget(
                           emailController: emailController,
                           passwordController: passwordController,
@@ -84,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+              // CUSTOM WIDGET FOR SWITCHING BETWEEN SIGNUP OR SIGNIN
               const SignuporinTextButtonWidget(
                 authMethod: 'Sign up',
                 text1: 'Don\'t have an account?',

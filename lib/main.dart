@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:open_cart/providers/address_provider.dart';
 import 'package:open_cart/providers/auth_provider.dart';
 import 'package:open_cart/providers/cart_provider.dart';
-import 'package:open_cart/screens/home_page_screen.dart';
+import 'package:open_cart/screens/splash_screen.dart';
 import 'package:open_cart/utils/routes.dart';
 import 'package:open_cart/utils/themes.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CartProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => AddressProvider(),
+        ),
       ],
       builder: (context, child) {
         {
@@ -33,7 +37,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: mainAppTheme,
             routes: routes,
-            initialRoute: HomeScreen.route,
+            initialRoute: SplashScreen.route,
+            // initialRoute: TestScreen.route,
           );
         }
       },

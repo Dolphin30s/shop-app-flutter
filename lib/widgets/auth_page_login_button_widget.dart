@@ -3,12 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:open_cart/providers/auth_provider.dart';
 import 'package:open_cart/screens/home_page_screen.dart';
-import 'package:open_cart/screens/register_screen.dart';
 import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/constants.dart';
 import 'package:open_cart/utils/styles.dart';
-import 'package:open_cart/utils/urls.dart';
 import 'package:provider/provider.dart';
+import 'package:open_cart/utils/dialog_boxes.dart';
 
 class LoginButtonWidget extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -24,72 +23,6 @@ class LoginButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showErrorDialog(String message) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text(message),
-                titleTextStyle: tsCBlackFFPrimaryS25,
-                content: Row(
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('Dont have an account?'),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed(RegisterScreen.route);
-                          },
-                          child: const Text('SignUp'),
-                        ),
-                      ],
-                    ),
-                    Image.network(
-                      burgerAvatarUrl,
-                      width: 100,
-                    ),
-                  ],
-                ),
-                actions: [
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: colorOrangeCustom,
-                          shape: RoundedRectangleBorder(borderRadius: bRC10)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ),
-                ],
-              ));
-    }
-
-    void _showSucessDialog(String message) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('Welcome to BurgerSpot!'),
-                titleTextStyle: tsCBlackFFPrimaryS25,
-                content: Text(message),
-                actions: [
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: colorOrangeCustom,
-                          shape: RoundedRectangleBorder(borderRadius: bRC20)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Okay'),
-                    ),
-                  ),
-                ],
-              ));
-    }
-
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: colorOrangeCustom,
@@ -100,28 +33,34 @@ class LoginButtonWidget extends StatelessWidget {
         final String password = passwordController.text;
 
         try {
-          if (formKey.currentState!.validate()) {
-            await Provider.of<AuthorizationProvider>(context, listen: false)
-                .signin(email, password);
-
-            Navigator.of(context).pushReplacementNamed(HomeScreen.route);
-            _showSucessDialog('Lets make your first order!');
-          }
-        } on Error catch (error) {
+          // if (formKey.currentState!.validate()) {
+          await Provider.of<AuthorizationProvider>(context, listen: false)
+              .signin(email, password);
+          Navigator.of(context).pushReplacementNamed(HomeScreen.route);
+          showSucessDialog('Lets make your first order!', context);
+          // }
+        } catch (error) {
           print(
               'try4################################################################################################');
           print('This is the error : ${error.toString()}');
           var errMessage = 'Unable to login at the moment 😢';
           if (error.toString().contains("INVALID_PASSWORD")) {
-            var errMessage = 'Invalid Password!';
-          } else if (error.toString().contains("EMAIL_NOT_FOUND")) {
-            var errMessage = 'Invalid Email!';
+            errMessage = 'Please enter a valid password!';
+          } else if (error.toString() == "INVALID_EMAIL") {
+            errMessage = 'Please enter a valid Email!';
+            print(errMessage);
           } else if (error.toString().contains("USER_DISABLED")) {
-            var errMessage = 'Your Account has been disabled!';
+            errMessage = 'Your Account has been disabled!';
+          } else if (error.toString().contains("EMAIL_NOT_FOUND")) {
+            errMessage = 'The email you entered was not found 😢';
+          } else {
+            errMessage = 'Oops!';
           }
+          print(errMessage);
+
           print(
               'try5################################################################################################');
-          _showErrorDialog(errMessage);
+          showErrorDialog(errMessage, context);
         }
         print(
             'try6################################################################################################');

@@ -21,35 +21,30 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: colorDarkGrey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                'BS',
-                style: tsCOrangeCustomFFPrimaryS100,
-                textAlign: TextAlign.center,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'BS',
+            style: tsCOrangeCustomFFPrimaryS100,
+            textAlign: TextAlign.center,
+          ),
+          Center(
+            child: SizedBox(
+              width: 100,
+              child: LinearProgressIndicator(
+                color: colorOrangeCustom,
+                backgroundColor: colorDarkGrey,
               ),
             ),
-            Center(
-              child: SizedBox(
-                width: 100,
-                child: LinearProgressIndicator(
-                  color: colorOrangeCustom,
-                  backgroundColor: colorDarkGrey,
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
 
-  _initAsync() async {
+  void _initAsync() async {
     await Future.delayed(const Duration(seconds: 5));
     await Navigator.of(context).pushReplacementNamed(LoginScreen.route);
   }

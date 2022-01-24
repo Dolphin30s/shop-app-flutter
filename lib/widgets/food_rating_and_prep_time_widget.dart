@@ -12,26 +12,36 @@ class FoodRatingAndPrepTimeWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              map["foodRating"].toString(),
-              style: tsCwhiteFFPrimaryS15,
-            ),
-            const SBW5(),
-            Icon(
-              Icons.star,
-              size: 15,
-              color: Colors.amber.shade400,
-            )
-          ],
-        ),
+        RatingWithStar(text: map["foodRating"].toString()),
         const SBW5(),
         Text(
           "${map['foodPrepTime'].toString()} mins",
           style: tsCwhiteFFPrimaryS12,
         ),
+      ],
+    );
+  }
+}
+
+class RatingWithStar extends StatelessWidget {
+  final String text;
+  const RatingWithStar({Key? key, required this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          text.toString(),
+          style: tsCwhiteFFPrimaryS15,
+        ),
+        const SBW5(),
+        Icon(
+          Icons.star,
+          size: 15,
+          color: Colors.amber.shade400,
+        )
       ],
     );
   }
