@@ -9,17 +9,26 @@ import 'package:open_cart/widgets/auth_page_header_widget.dart';
 import 'package:open_cart/widgets/auth_page_login_button_widget.dart';
 import 'package:open_cart/widgets/signup_text_button_widget.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const String route = '/LoginScreen';
 
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    var isObscure = true;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -58,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                       const SBH20(),
                       TextFormField(
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
+                        obscureText: isObscure,
                         style: tsCwhiteFFPrimaryS15,
                         controller: passwordController,
                         validator: (value) => validatePassword(value),

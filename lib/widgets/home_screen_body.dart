@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_cart/providers/auth_provider.dart';
 import 'package:open_cart/providers/category_provider.dart';
 import 'package:open_cart/providers/popular_deals_provider.dart';
@@ -316,7 +317,7 @@ class _HomeScreenCustomSliverAppBarWidget extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.favorite),
+          icon: const FaIcon(IconDataBrands(0xf270)),
         ),
         Stack(
           children: [

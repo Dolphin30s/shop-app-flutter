@@ -52,6 +52,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     await _provider.fetchProducts();
   }
 }
+
 class _FavouritesScreenBodyWidget extends StatelessWidget {
   const _FavouritesScreenBodyWidget({
     Key? key,
@@ -63,39 +64,40 @@ class _FavouritesScreenBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: Container(
-          color: colorDarkGrey,
-          width: double.infinity,
-          child: Column(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: deviceSize.height,
-                child: Consumer<FavouritesProvider>(
-                    builder: (context, provider, _) {
-                  return ListView.builder(
-                      itemCount: provider.favouritesList.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          color: Colors.black45,
-                          elevation: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child:
-                                _FavouritesScreenTileWidget(index: index),
-                          ),
-                        );
-                      });
-                }),
-              ),
-            ],
-          ),
+      child: Container(
+        color: colorDarkGrey,
+        width: double.infinity,
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: deviceSize.height,
+              child:
+                  Consumer<FavouritesProvider>(builder: (context, provider, _) {
+                return ListView.builder(
+                    itemCount: provider.favouritesList.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: Colors.black45,
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: _FavouritesScreenTileWidget(index: index),
+                        ),
+                      );
+                    });
+              }),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
+
 class _FavouritesScreenTileWidget extends StatelessWidget {
-  const _FavouritesScreenTileWidget({Key? key, required this.index}) : super(key: key);
+  const _FavouritesScreenTileWidget({Key? key, required this.index})
+      : super(key: key);
   final int index;
 
   @override
@@ -103,7 +105,8 @@ class _FavouritesScreenTileWidget extends StatelessWidget {
     return Consumer<FavouritesProvider>(builder: (context, provider, _) {
       return ListTile(
         tileColor: Colors.transparent,
-        leading: Image.network(provider.favouritesList[index].productImage.toString(),
+        leading: Image.network(
+            provider.favouritesList[index].productImage.toString(),
             fit: BoxFit.cover),
         title: Text(
           provider.favouritesList[index].productName.toString(),
@@ -114,7 +117,9 @@ class _FavouritesScreenTileWidget extends StatelessWidget {
           style: tsCFFS20W500,
         ),
         trailing: IconButton(
-          onPressed: () {},
+          onPressed: () => provider.removeFromWishlist(
+              index: index,
+              productPrice: provider.favouritesList[index].productPrice),
           icon: Icon(
             Icons.delete,
             color: colorFF,

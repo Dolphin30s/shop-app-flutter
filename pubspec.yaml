@@ -15,10 +15,10 @@ dependencies:
   cloud_firestore: ^3.1.6
   firebase_core : ^1.10.2
   provider: ^6.0.2
-  fluttericon: ^2.0.0
   shared_preferences: ^2.0.12
   dio: ^4.0.4
   path_provider: ^2.0.8
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:

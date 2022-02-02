@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 child: const TabBarView(
-                  children:  [
+                  children: [
                     HomeScreenBody(),
                     BurgersScreen(),
                     FavouritesScreen(),
@@ -66,4 +66,3 @@ class _HomeScreenState extends State<HomeScreen> {
     await _cartProvider.fetchProducts();
   }
 }
-

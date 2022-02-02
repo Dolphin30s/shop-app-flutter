@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:open_cart/providers/address_provider.dart';
 import 'package:open_cart/screens/add_address_screen.dart';
 import 'package:open_cart/utils/colors.dart';
-
 
 class AddNewAdressScreenBottomNavBarWidget extends StatelessWidget {
   const AddNewAdressScreenBottomNavBarWidget({
@@ -18,8 +18,10 @@ class AddNewAdressScreenBottomNavBarWidget extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
-            onTap: () =>
-                Navigator.of(context).pushReplacementNamed(AddressScreen.route),
+            onTap: () async {
+              await AddressProvider().fetchAddressDetails();
+              Navigator.of(context).pushReplacementNamed(AddressScreen.route);
+            },
             child: Container(
               child: const Center(
                 child: Text('Go back'),

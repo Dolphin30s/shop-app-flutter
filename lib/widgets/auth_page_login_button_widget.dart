@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, avoid_print
+// ignore_for_file: unused_local_variable, avoid_print, void_checks
 
 import 'package:flutter/material.dart';
 import 'package:open_cart/providers/auth_provider.dart';
@@ -28,44 +28,9 @@ class LoginButtonWidget extends StatelessWidget {
           primary: colorOrangeCustom,
           fixedSize: const Size(150, 50),
           shape: RoundedRectangleBorder(borderRadius: bRC20)),
-      onPressed: () async {
-        final String email = emailController.text;
-        final String password = passwordController.text;
-
-        try {
-          // if (formKey.currentState!.validate()) {
-          await Provider.of<AuthorizationProvider>(context, listen: false)
-              .signin(email, password);
-          Navigator.of(context).pushReplacementNamed(HomeScreen.route);
-          showSucessDialog('Lets make your first order!', context);
-          // }
-        } catch (error) {
-          print(
-              'try4################################################################################################');
-          print('This is the error : ${error.toString()}');
-          var errMessage = 'Unable to login at the moment 😢';
-          if (error.toString().contains("INVALID_PASSWORD")) {
-            errMessage = 'Please enter a valid password!';
-          } else if (error.toString() == "INVALID_EMAIL") {
-            errMessage = 'Please enter a valid Email!';
-            print(errMessage);
-          } else if (error.toString().contains("USER_DISABLED")) {
-            errMessage = 'Your Account has been disabled!';
-          } else if (error.toString().contains("EMAIL_NOT_FOUND")) {
-            errMessage = 'The email you entered was not found 😢';
-          } else {
-            errMessage = 'Oops!';
-          }
-          print(errMessage);
-
-          print(
-              'try5################################################################################################');
-          showErrorDialog(errMessage, context);
-        }
-        print(
-            'try6################################################################################################');
-        // emailController.clear();
-        // passwordController.clear();
+      onPressed: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        return _login(context);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,5 +43,46 @@ class LoginButtonWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _login(context) async {
+    final String email = emailController.text;
+    final String password = passwordController.text;
+
+    try {
+      // if (formKey.currentState!.validate()) {
+      await Provider.of<AuthorizationProvider>(context, listen: false)
+          .signin(email, password);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.route);
+      showSucessDialog('Lets make your first order!', context);
+      // showLoading(context);
+      // }
+    } catch (error) {
+      print(
+          'try4################################################################################################');
+      print('This is the error : ${error.toString()}');
+      var errMessage = 'Unable to login at the moment 😢';
+      if (error.toString().contains("INVALID_PASSWORD")) {
+        errMessage = 'Please enter a valid password!';
+      } else if (error.toString() == "INVALID_EMAIL") {
+        errMessage = 'Please enter a valid Email!';
+        print(errMessage);
+      } else if (error.toString().contains("USER_DISABLED")) {
+        errMessage = 'Your Account has been disabled!';
+      } else if (error.toString().contains("EMAIL_NOT_FOUND")) {
+        errMessage = 'The email you entered was not found 😢';
+      } else {
+        errMessage = 'Oops!';
+      }
+      print(errMessage);
+
+      print(
+          'try5################################################################################################');
+      showErrorDialog(errMessage, context);
+    }
+    print(
+        'try6################################################################################################');
+    // emailController.clear();
+    // passwordController.clear();
   }
 }

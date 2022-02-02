@@ -28,12 +28,6 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
-  void dispose() {
-    _provider.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
@@ -53,6 +47,8 @@ class _CartScreenState extends State<CartScreen> {
 
   void _initAsync() async {
     await _provider.fetchProducts();
+    await _provider.fetchTotalAmount();
     await _addressProvider.fetchAddressDetails();
+
   }
 }

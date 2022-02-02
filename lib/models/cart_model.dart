@@ -1,10 +1,10 @@
-
 class CartModel {
   final String? cartId;
   final String? userId;
   final double? productPrice;
   final String? productName;
   final String? productImage;
+  final int? productQuantity;
 
   CartModel({
     this.productName,
@@ -12,7 +12,7 @@ class CartModel {
     this.userId,
     this.productPrice,
     this.productImage,
-
+    this.productQuantity,
   }) : super();
 
   factory CartModel.fromMap(Map<String, dynamic> data) {
@@ -22,7 +22,7 @@ class CartModel {
       productPrice: data["productPrice"],
       productName: data["productName"],
       productImage: data["productImage"],
-
+      productQuantity: data["productQuantity"],
     );
   }
 
@@ -32,6 +32,6 @@ class CartModel {
         "productPrice": productPrice,
         "productName": productName,
         "productImage": productImage,
-
+        "productQuantity": productQuantity,
       };
 }

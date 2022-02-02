@@ -51,7 +51,8 @@ class AuthorizationProvider with ChangeNotifier {
       }).then((value) async {
         _token = value.data["idToken"];
         _userId = value.data["localId"];
-
+        var prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userId', _userId.toString());
         _expiryDate = DateTime.now()
             .add(Duration(seconds: int.parse(value.data["expiresIn"])));
 
@@ -63,7 +64,7 @@ class AuthorizationProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addUserDetails({
+  Future<bool> addUserDetails({
     required name,
     required email,
     required phone,
@@ -78,7 +79,24 @@ class AuthorizationProvider with ChangeNotifier {
       'email': email,
       'phone': phone,
       'password': password,
-    }).then((value) {});
+    }).then((value) async {
+      final order = FirebaseFirestore.instance.collection("test");
+      // final prefs = await SharedPreferences.getInstance();
+      // final userId = prefs.getString('userId');
+      return order.add({
+        "addressLine1": "",
+        "addressLine2": "",
+        "city": "",
+        "paymentIcon": "",
+        "paymentMode": "",
+        "pincode": "",
+        "products": [],
+        "orderedAt": "",
+        "orderId": "",
+        "totalAmount": 0,
+        "userId": userId,
+      }).then((value) => true);
+    });
   }
 
   // Future<UserModel?> fetchUserDetails() async {
@@ -126,12 +144,11 @@ class AuthorizationProvider with ChangeNotifier {
         loginData.setString('userId', _userId.toString());
         loginData.setString('dateTime', _expiryDate!.toIso8601String());
         return AuthUserModel.fromJson(value.data);
-      }).catchError((error)  {
-        int a= 0;
-      
+      }).catchError((error) {
+        int a = 0;
+
         if (error.response!.data["error"] != null) {
-          final String errMessage =
-               error.response!.data["error"]["message"];
+          final String errMessage = error.response!.data["error"]["message"];
           throw APIExceptions(msg: errMessage.toString());
         } else {
           return null;
@@ -142,22 +159,24 @@ class AuthorizationProvider with ChangeNotifier {
     }
   }
 
+  late bool isLogin;
+
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('token') ||
-        !prefs.containsKey('userId') ||
-        !prefs.containsKey('dateTime')) {
-      return false;
+    if (prefs.containsKey('token') &&
+        prefs.containsKey('userId') &&
+        prefs.containsKey('dateTime')) {
+      return true;
     }
     final userToken = prefs.getString('token');
     final userId = prefs.getString('userId');
     final userdateTime = prefs.getString('dateTime');
     notifyListeners();
     if (userToken != null) {
-      prefs.setBool('isLogin', true);
+      isLogin = await prefs.setBool('isLogin', true);
       return true;
     } else {
-      prefs.setBool('isLogin', false);
+      isLogin = await prefs.setBool('isLogin', false);
       return false;
     }
   }

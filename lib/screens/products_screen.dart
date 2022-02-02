@@ -8,7 +8,7 @@ import 'package:open_cart/utils/styles.dart';
 import 'package:provider/provider.dart';
 
 class BurgersScreen extends StatefulWidget {
-  static const String route = '/produtsScreen';
+  static const String route = '/burger_screen';
   const BurgersScreen({Key? key}) : super(key: key);
 
   @override
@@ -42,6 +42,7 @@ class _BurgersScreenState extends State<BurgersScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Burgers'),
+            shadowColor: colorTransparent,
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -58,7 +59,7 @@ class _BurgersScreenState extends State<BurgersScreen> {
                         Map<String, dynamic> map = _foodList[index].toMap();
                         return SizedBox(
                           width: double.infinity,
-                          height: 150,
+                          height: 160,
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).pushNamed(
                                 ProductDetailScreen.route,
@@ -93,8 +94,10 @@ class _BurgersScreenState extends State<BurgersScreen> {
     await _foodProvider.fetchProducts();
   }
 }
+
 class _BurgerScreenProductImageBox extends StatelessWidget {
-  const _BurgerScreenProductImageBox({Key? key, required this.map}) : super(key: key);
+  const _BurgerScreenProductImageBox({Key? key, required this.map})
+      : super(key: key);
   final Map map;
 
   @override
@@ -119,14 +122,15 @@ class _BurgerScreenProductImageBox extends StatelessWidget {
 }
 
 class _BurgersScreenProductDetailsWidget extends StatelessWidget {
-  const _BurgersScreenProductDetailsWidget({Key? key, required this.map}) : super(key: key);
+  const _BurgersScreenProductDetailsWidget({Key? key, required this.map})
+      : super(key: key);
   final Map map;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<FoodProvider>(builder: (context, provider, _) {
       return Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             decoration: BoxDecoration(
@@ -168,6 +172,12 @@ class _BurgersScreenProductDetailsWidget extends StatelessWidget {
                 style: tsCwhiteFFPrimaryS12,
               ),
             ],
+          ),
+          const SBH5(),
+          Text(
+            map["foodprice"].toString(),
+            style: TextStyle(
+                fontSize: 12, color: colorFF, fontWeight: FontWeight.w400),
           ),
           const SBH5(),
           Text(

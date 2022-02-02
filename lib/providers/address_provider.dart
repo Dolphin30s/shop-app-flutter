@@ -7,7 +7,6 @@ import 'package:open_cart/models/address_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressProvider with ChangeNotifier {
-
   List<AddressModel> _addressList = <AddressModel>[];
 
   List<AddressModel> get addressList => _addressList;
@@ -53,6 +52,16 @@ class AddressProvider with ChangeNotifier {
     }).then((value) {});
   }
 
+  /// Function to delete an address from list.
+  Future<void> deleteAddress(index) async {
+    final cart = await FirebaseFirestore.instance.collection("addresses").get();
+    String docId = (cart.docs.elementAt(index).id);
+    return FirebaseFirestore.instance
+        .collection("addresses")
+        .doc(docId)
+        .delete();
+  }
+
   Future<AddressModel?> fetchAddressDetails() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('userId');
@@ -65,11 +74,31 @@ class AddressProvider with ChangeNotifier {
           .get()
           .then((value) async {
         _addressList =
-          value.docs.map((doc) => AddressModel.fromMap(doc.data())).toList();
+            value.docs.map((doc) => AddressModel.fromMap(doc.data())).toList();
         print(addressList.length);
       }).catchError((err) => print(err));
     } catch (ex) {
       print(ex.toString());
     } finally {}
+  }
+
+  Future<void> selectAddress({required map}) async {
+    final val = FirebaseFirestore.instance.collection("test");
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('userId');
+    final userVal = await FirebaseFirestore.instance
+        .collection("addresses")
+        .where('userId', isEqualTo: userId)
+        .get();
+    final String _id = userVal.docs.first.id;
+    return val.doc(_id).set({
+      'userId': userId,
+      'addressLine1': map["addressLine1"],
+      'addressLine2': map["addressLine2"],
+      'city': map["city"],
+      'pincode': map["pincode"],
+    }).then((value) {
+      print('sucessful');
+    });
   }
 }

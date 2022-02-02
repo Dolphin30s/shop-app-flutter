@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:open_cart/providers/cart_provider.dart';
+import 'package:open_cart/providers/order_provider.dart';
 import 'package:open_cart/screens/add_address_screen.dart';
-import 'package:open_cart/screens/home_page_screen.dart';
+import 'package:open_cart/screens/products_screen.dart';
 import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/dialog_boxes.dart';
 import 'package:open_cart/utils/sized_box_custom.dart';
 import 'package:open_cart/utils/styles.dart';
 import 'package:provider/provider.dart';
 
-class CartScreenBottomSectionWidget extends StatelessWidget {
+class CartScreenBottomSectionWidget extends StatefulWidget {
   const CartScreenBottomSectionWidget({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<CartScreenBottomSectionWidget> createState() =>
+      _CartScreenBottomSectionWidgetState();
+}
+
+class _CartScreenBottomSectionWidgetState
+    extends State<CartScreenBottomSectionWidget> {
   @override
   Widget build(BuildContext context) {
     final Size deviceSize = MediaQuery.of(context).size;
@@ -45,16 +53,22 @@ class CartScreenBottomSectionWidget extends StatelessWidget {
                   ],
                 ),
                 Consumer<CartProvider>(builder: (context, provider, _) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(provider.cartList.length.toString(),
-                          style: tsCwhiteS15W300),
-                      const SBH10(),
-                      Text('${provider.totalAmount}\$', style: tsCwhiteS15W300),
-                    ],
-                  );
+                  if (provider.cartTotal.isEmpty) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(provider.cartList.length.toString(),
+                            style: tsCwhiteS15W300),
+                        const SBH10(),
+                        Text(
+                            '${(provider.cartTotal[0].totalPrice)!.roundToDouble()}\$',
+                            style: tsCwhiteS15W300),
+                      ],
+                    );
+                  }
                 }),
               ],
             ),
@@ -62,23 +76,28 @@ class CartScreenBottomSectionWidget extends StatelessWidget {
           Row(
             children: [
               GestureDetector(
-                onTap: () =>
-                    Navigator.pushReplacementNamed(context, HomeScreen.route),
+                onTap: () => Navigator.pushReplacementNamed(
+                    context, BurgersScreen.route),
                 child: Container(
                   height: 50,
                   width: deviceSize.width / 2,
                   color: colorFF,
                   child: const Center(
-                    child: Text('Goto Homepage'),
+                    child: Text('Goto Burgers'),
                   ),
                 ),
               ),
               Consumer<CartProvider>(builder: (context, provider, _) {
                 return GestureDetector(
-                  onTap: () => provider.cartList.isEmpty
-                      ? showNoItemsInCartDialog(context)
-                      : Navigator.of(context)
-                          .pushReplacementNamed(AddressScreen.route),
+                  onTap: () {
+                    if (provider.cartList.isEmpty) {
+                      showNoItemsInCartDialog(context);
+                    } else {
+                      // OrderProvider()
+                      //     .updateOrderCartValue(list: provider.cartList);
+                      Navigator.of(context).pushNamed(AddressScreen.route);
+                    }
+                  },
                   child: Container(
                     height: 50,
                     width: deviceSize.width / 2,

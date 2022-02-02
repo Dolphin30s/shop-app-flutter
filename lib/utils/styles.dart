@@ -113,3 +113,7 @@ TextStyle get tsCFFS20W500 => TextStyle(
 TextStyle get tsS20 => const TextStyle(fontSize: 20);
 TextStyle get tsCffFFprimaryS20 =>
     TextStyle(color: colorFF, fontSize: 20, fontFamily: primaryFont);
+TextStyle get tsCGrey500WBold =>
+    TextStyle(color: colorGrey500, fontWeight: FontWeight.bold);
+TextStyle get tsCDarkGreyWBold =>
+    TextStyle(color: colorDarkGrey, fontWeight: FontWeight.bold);

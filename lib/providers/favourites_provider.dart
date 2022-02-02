@@ -44,10 +44,12 @@ class FavouritesProvider extends BaseProvider with MixinProgressProvider {
   }
 
   Future<void> addProductToFavourites(
-      {favouritesId, productPrice, required productId, userId,required productImage}) async {
+      {favouritesId,
+      productPrice,
+      required productId,
+      userId,
+      required productImage}) async {
     final favourites = FirebaseFirestore.instance.collection("favourites");
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('userId');
     return favourites.add({
       'favouritesId': favourites.doc().id,
       'userId': userId,
@@ -57,4 +59,10 @@ class FavouritesProvider extends BaseProvider with MixinProgressProvider {
     }).then((value) => print('added to favourites'));
   }
 
+  /// Function to delete a product from cart.
+  Future<void> removeFromWishlist({required int index,required productPrice}) async {
+    final cart = await FirebaseFirestore.instance.collection("favourites").get();
+    String docId = (cart.docs.elementAt(index).id);
+    return FirebaseFirestore.instance.collection("favourites").doc(docId).delete();
+  }
 }

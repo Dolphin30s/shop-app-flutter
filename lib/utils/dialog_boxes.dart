@@ -71,6 +71,36 @@ void showSucessDialog(String message, BuildContext context) {
           ));
 }
 
+// void showLoading(context) {
+//   showDialog(
+//       context: context,
+//       builder: (context) {
+//         Future.delayed(const Duration(seconds: 3), () {
+//           Navigator.of(context).pop();
+//         });
+//         return SizedBox(
+//           child: Container(
+//             color: colorDarkGrey,
+//             height: MediaQuery.of(context).size.height,
+//             width: MediaQuery.of(context).size.width,
+//             child: Center(
+//               child: Column(
+//                 mainAxisSize: MainAxisSize.min,
+//                 children: [
+//                   const CircularProgressIndicator(),
+//                   const SBH10(),
+//                   Text(
+//                     'Just a minute!',
+//                     style: tsAppBarTitle,
+//                   )
+//                 ],
+//               ),
+//             ),
+//           ),
+//         );
+//       });
+// }
+
 void showNoItemsInCartDialog(BuildContext context) {
   showDialog(
       context: context,
@@ -108,48 +138,63 @@ void showAddedToCart(context) {
         );
       });
 }
-    void showErrorRegisterDialog({required String message,required BuildContext context}) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('Errorrrrr!!!'),
-                titleTextStyle: tsCBlackFFPrimaryS25,
-                content: Text(message),
-                actions: [
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: colorOrangeCustom,
-                          shape: RoundedRectangleBorder(borderRadius: bRC30)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ),
-                ],
-              ));
-    }
 
-        void showRegisterSucessDialog({required BuildContext context}) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('Welcome to BurgerSpot!'),
-                titleTextStyle: tsCBlackFFPrimaryS25,
-                content: const Text('Please Login to continue'),
-                actions: [
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: colorOrangeCustom,
-                          shape: RoundedRectangleBorder(borderRadius: bRC30)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Okay'),
-                    ),
-                  ),
-                ],
-              ));
-    }
+void alreadyInCart(context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.of(context).pop(true);
+        });
+        return const AlertDialog(
+          title: Text('already in cart!'),
+        );
+      });
+}
+
+void showErrorRegisterDialog(
+    {required String message, required BuildContext context}) {
+  showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text('Errorrrrr!!!'),
+            titleTextStyle: tsCBlackFFPrimaryS25,
+            content: Text(message),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: colorOrangeCustom,
+                      shape: RoundedRectangleBorder(borderRadius: bRC30)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ),
+            ],
+          ));
+}
+
+void showRegisterSucessDialog({required BuildContext context}) {
+  showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text('Welcome to BurgerSpot!'),
+            titleTextStyle: tsCBlackFFPrimaryS25,
+            content: const Text('Please Login to continue'),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: colorOrangeCustom,
+                      shape: RoundedRectangleBorder(borderRadius: bRC30)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Okay'),
+                ),
+              ),
+            ],
+          ));
+}

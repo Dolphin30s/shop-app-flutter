@@ -11,20 +11,20 @@ class OrSeperatorWidget extends StatelessWidget {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Expanded(
         child: Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: colorDarkGrey, width: 0.1)),
+          decoration:
+              BoxDecoration(border: Border.all(color: colorFF, width: 0.3)),
         ),
       ),
       const SBW10(),
       Text(
         'Or',
-        style: tsS20,
+        style: tsCwhiteFFPrimaryS20,
       ),
       const SBW10(),
       Expanded(
         child: Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: colorDarkGrey, width: 0.1)),
+          decoration:
+              BoxDecoration(border: Border.all(color: colorFF, width: 0.3)),
         ),
       ),
     ]);

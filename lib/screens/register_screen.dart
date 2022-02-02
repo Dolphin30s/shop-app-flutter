@@ -219,9 +219,10 @@ class _ThisRegisterButtonWidget extends StatelessWidget {
 
   void _onRegister({required BuildContext context}) async {
     final String email = _ThisInheritedWidget.of(context).emailController.text;
-    final String password = passwordController.text;
-    final String name = nameController.text;
-    final String phone = phoneController.text;
+    final String password =
+        _ThisInheritedWidget.of(context).passwordController.text;
+    final String name = _ThisInheritedWidget.of(context).nameController.text;
+    final String phone = _ThisInheritedWidget.of(context).phoneController.text;
 
     try {
       if (formKey.currentState!.validate()) {
@@ -232,7 +233,7 @@ class _ThisRegisterButtonWidget extends StatelessWidget {
         Navigator.of(context).pushReplacementNamed(LoginScreen.route);
         showRegisterSucessDialog(context: context);
       }
-    }catch (error) {
+    } catch (error) {
       print(
           'try4################################################################################################');
       print('This is the error : ${error.toString()}');
@@ -250,7 +251,5 @@ class _ThisRegisterButtonWidget extends StatelessWidget {
     }
     print(
         'try6################################################################################################');
-
   }
-  
 }

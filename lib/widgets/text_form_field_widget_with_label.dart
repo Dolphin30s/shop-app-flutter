@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/sized_box_custom.dart';
 import 'package:open_cart/utils/styles.dart';
 
@@ -24,8 +25,11 @@ class TextFormFieldWithLabelWidget extends StatelessWidget {
         TextFormField(
           controller: controller,
           decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            label: Text('Enter your $label'),
+            fillColor: colorFF,
+            filled: true,
+            border:
+                OutlineInputBorder(borderSide: BorderSide(color: colorGrey400)),
+            hintText: 'Enter your $label',
           ),
         ),
         const SBH15(),
