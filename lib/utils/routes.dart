@@ -6,6 +6,7 @@ import 'package:open_cart/screens/home_page_screen.dart';
 import 'package:open_cart/screens/login_screen.dart';
 import 'package:open_cart/screens/logout_screen.dart';
 import 'package:open_cart/screens/my_account_screen.dart';
+import 'package:open_cart/screens/my_orders_screen.dart';
 import 'package:open_cart/screens/order_confirmed_screen.dart';
 import 'package:open_cart/screens/order_preview_screen.dart';
 import 'package:open_cart/screens/payment_screen.dart';
@@ -16,6 +17,7 @@ import 'package:open_cart/screens/splash_screen.dart';
 import 'package:open_cart/test_screen.dart';
 
 final routes = {
+  MyOrdersScreen.route : (context) => const MyOrdersScreen(),
   OrderPlacedScreen.route: (context) => const OrderPlacedScreen(),
   PaymentScreen.route: (context) => const PaymentScreen(),
   OrderPreviewScreen.route: (context) => const OrderPreviewScreen(),

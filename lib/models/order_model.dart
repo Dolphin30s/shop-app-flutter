@@ -1,4 +1,5 @@
 import 'package:open_cart/models/base_model.dart';
+import 'package:open_cart/models/cart_model.dart';
 
 class OrderModel extends BaseModel {
   final String addressLine1;
@@ -7,7 +8,7 @@ class OrderModel extends BaseModel {
   final String paymentIcon;
   final String paymentMode;
   final String pincode;
-  final String products;
+  final List<dynamic> products;
   final String orderedAt;
   final String orderId;
   final double totalAmount;

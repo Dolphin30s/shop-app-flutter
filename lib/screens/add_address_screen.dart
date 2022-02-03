@@ -121,7 +121,8 @@ class _AddressScreenState extends State<AddressScreen> {
         onTapLeft: () {
           Navigator.of(context).pop();
         },
-        onTapRight: () {
+        onTapRight: () async {
+          await OrderProvider().fetchOrderDetails();
           Navigator.of(context).pushNamed(OrderPreviewScreen.route);
         },
         rightText: 'Continue',

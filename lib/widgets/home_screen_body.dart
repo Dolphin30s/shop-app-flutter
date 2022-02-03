@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_cart/providers/auth_provider.dart';
 import 'package:open_cart/providers/category_provider.dart';
 import 'package:open_cart/providers/popular_deals_provider.dart';
@@ -13,8 +12,12 @@ import 'package:open_cart/utils/urls.dart';
 import 'package:open_cart/widgets/cart_icon_with_count_widget.dart';
 import 'package:open_cart/widgets/scrolling_position_indicator_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:open_cart/utils/extensions.dart';
 
 class HomeScreenBody extends StatelessWidget {
+  /// The Class that respresents the TabBar View of thie main Home Page. Contains two widgets.
+  /// A custom sliver appbar and a custom sliver list.
   const HomeScreenBody({
     Key? key,
   }) : super(key: key);
@@ -31,6 +34,7 @@ class HomeScreenBody extends StatelessWidget {
 }
 
 class _HomeScreenCustomSliverListWidget extends StatefulWidget {
+  ///Custom Sliver list widget for the home screen body
   const _HomeScreenCustomSliverListWidget({
     Key? key,
   }) : super(key: key);
@@ -42,12 +46,12 @@ class _HomeScreenCustomSliverListWidget extends StatefulWidget {
 
 class _HomeScreenCustomSliverListWidgetState
     extends State<_HomeScreenCustomSliverListWidget> {
-  late CategoryProvider _provider;
+  late CategoryProvider _categoryProvider;
   late PopularDealsProvider _popularProvider;
 
   @override
   void initState() {
-    _provider = CategoryProvider();
+    _categoryProvider = CategoryProvider();
     _popularProvider = PopularDealsProvider();
 
     Future.microtask(() => _initAsync());
@@ -56,7 +60,7 @@ class _HomeScreenCustomSliverListWidgetState
 
   @override
   void dispose() {
-    _provider.dispose();
+    _categoryProvider.dispose();
     super.dispose();
   }
 
@@ -64,62 +68,58 @@ class _HomeScreenCustomSliverListWidgetState
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<CategoryProvider>.value(value: _provider),
+          ChangeNotifierProvider<CategoryProvider>.value(
+            value: _categoryProvider,
+          ),
           ChangeNotifierProvider<PopularDealsProvider>.value(
-              value: _popularProvider),
+            value: _popularProvider,
+          ),
         ],
         builder: (context, _) {
           return Consumer<CategoryProvider>(builder: (context, provider, _) {
             return SliverList(
                 delegate: SliverChildListDelegate([
-              provider.isLoading
-                  ? const SizedBox(
-                      height: 400,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : Container(
-                      padding: const EdgeInsets.all(2),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: colorOrangeCustom,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: rC30,
-                          topRight: rC30,
-                        ),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: colorGrey900,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: rC30,
-                            topRight: rC30,
-                          ),
-                        ),
-                        child: Column(
-                          children: const [
-                            ScrollingPositionIndiacatorWidget(),
-                            _HomeScreenCategoriesBoxWidget(),
-                            SBH10(),
-                            _HomeScreenPopularDealsWidget(),
-                            SBH10(),
-                            _HomeScreenCategoriesBoxWidget(),
-                            SBH10(),
-                            _HomeScreenCategoriesBoxWidget(),
-                          ],
-                        ),
-                      ),
-                    )
+              Container(
+                padding: const EdgeInsets.all(2),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: colorOrangeCustom,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: rC30,
+                    topRight: rC30,
+                  ),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: colorGrey900,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: rC30,
+                      topRight: rC30,
+                    ),
+                  ),
+                  child: Column(
+                    children: const [
+                      ScrollingPositionIndiacatorWidget(),
+                      _HomeScreenCategoriesBoxWidget(),
+                      SBH10(),
+                      _HomeScreenPopularDealsWidget(),
+                      SBH10(),
+                      _HomeScreenCategoriesBoxWidget(),
+                      SBH10(),
+                      _HomeScreenCategoriesBoxWidget(),
+                    ],
+                  ),
+                ),
+              ).withProviderProgress<CategoryProvider>(),
             ]));
           });
         });
   }
 
   Future<void> _initAsync() async {
-    await _provider.fetchProducts();
+    await _categoryProvider.fetchProducts();
     await _popularProvider.fetchProducts();
   }
 }
@@ -314,24 +314,46 @@ class _HomeScreenCustomSliverAppBarWidget extends StatelessWidget {
       iconTheme: sliverAppBarIconTheme,
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       centerTitle: true,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const FaIcon(IconDataBrands(0xf270)),
-        ),
-        Stack(
-          children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(CartScreen.route);
-                },
-                icon: const Icon(Icons.shopping_cart_outlined)),
-            const Positioned(top: 0, right: 3, child: CountWidget()),
-          ],
-        ),
+      actions: const [
+        _FavouriteButtonWidget(),
+        CartIconWithCounter(),
       ],
       expandedHeight: MediaQuery.of(context).size.height / 3,
       flexibleSpace: const _HomeScreenCustomFlexibleSpaceBar(),
+    );
+  }
+}
+
+class CartIconWithCounter extends StatelessWidget {
+  const CartIconWithCounter({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(CartScreen.route);
+            },
+            icon: const Icon(Icons.shopping_cart_outlined)),
+        const Positioned(top: 0, right: 3, child: CountWidget()),
+      ],
+    );
+  }
+}
+
+class _FavouriteButtonWidget extends StatelessWidget {
+  const _FavouriteButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {},
+      icon: const Icon(Icons.favorite),
     );
   }
 }
@@ -369,17 +391,12 @@ class _HomeScreenCustomFlexibleSpaceBarState
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Consumer<AuthorizationProvider>(
-                          builder: (context, provider, _) {
-                        return _HomeScreenHeyUserWidget(
-                          label: provider.user.userName.toString(),
-                        );
-                      }),
-                      const _HomeScreenWelcomeToMindsterWidget(),
-                      const SBH10(),
-                      const SBH10(),
-                      const _HomeScreenSelectLocationDropdownWidget(),
+                    children: const [
+                      _HomeScreenHeyUserWidget(),
+                      _HomeScreenWelcomeWidget(),
+                      SBH10(),
+                      SBH10(),
+                      _HomeScreenSelectLocationDropdownWidget(),
                     ],
                   ),
                 ),
@@ -396,10 +413,8 @@ class _HomeScreenCustomFlexibleSpaceBarState
 }
 
 class _HomeScreenHeyUserWidget extends StatelessWidget {
-  final String label;
   const _HomeScreenHeyUserWidget({
     Key? key,
-    required this.label,
   }) : super(key: key);
 
   @override
@@ -411,23 +426,37 @@ class _HomeScreenHeyUserWidget extends StatelessWidget {
   }
 }
 
-class _HomeScreenWelcomeToMindsterWidget extends StatelessWidget {
-  const _HomeScreenWelcomeToMindsterWidget({
+class _HomeScreenWelcomeWidget extends StatelessWidget {
+  const _HomeScreenWelcomeWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-          text: 'Welcome to ',
-          style:
-              TextStyle(color: colorFF, fontSize: 15, fontFamily: primaryFont),
-          children: <TextSpan>[
-            TextSpan(
-                text: 'BurgerSpot',
-                style: TextStyle(color: colorOrangeCustom, fontSize: 30))
-          ]),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Welcome to',
+          style: tsCwhiteFFPrimaryS15,
+        ),
+        AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText(
+              'BurgerSpot',
+              textStyle: TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.bold,
+                  color: colorOrangeCustom),
+              speed: const Duration(milliseconds: 200),
+            ),
+          ],
+          repeatForever: true,
+          // pause: const Duration(milliseconds: 100),
+          displayFullTextOnTap: true,
+          stopPauseOnTap: true,
+        )
+      ],
     );
   }
 }

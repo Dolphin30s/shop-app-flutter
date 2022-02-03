@@ -93,8 +93,8 @@ class _CartScreenBottomSectionWidgetState
                     if (provider.cartList.isEmpty) {
                       showNoItemsInCartDialog(context);
                     } else {
-                      // OrderProvider()
-                      //     .updateOrderCartValue(list: provider.cartList);
+                      OrderProvider().updateOrderCartValue(
+                          list: provider.cartList.first.toMap());
                       Navigator.of(context).pushNamed(AddressScreen.route);
                     }
                   },

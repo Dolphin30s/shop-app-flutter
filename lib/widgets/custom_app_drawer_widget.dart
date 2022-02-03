@@ -5,6 +5,7 @@ import 'package:open_cart/providers/auth_provider.dart';
 import 'package:open_cart/screens/add_address_screen.dart';
 import 'package:open_cart/screens/login_screen.dart';
 import 'package:open_cart/screens/logout_screen.dart';
+import 'package:open_cart/screens/my_orders_screen.dart';
 import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/styles.dart';
 import 'package:open_cart/widgets/address_screen_body_widget.dart';
@@ -42,7 +43,9 @@ class CustomAppDrawerWidget extends StatelessWidget {
           DrawerTileCustomWidget(
             title: 'Orders',
             iconData: Icons.store,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(MyOrdersScreen.route);
+            },
           ),
           DrawerTileCustomWidget(
             title: 'Deals and Offers',

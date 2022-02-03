@@ -37,11 +37,12 @@ class _CartScreenState extends State<CartScreen> {
         ],
         builder: (context, child) {
           return Scaffold(
-              bottomNavigationBar: const CartScreenBottomSectionWidget(),
-              appBar: AppBar(
-                title: const Text('My Cart'),
-              ),
-              body: const CartListSectionWidget());
+            bottomNavigationBar: const CartScreenBottomSectionWidget(),
+            appBar: AppBar(
+              title: const Text('My Cart'),
+            ),
+            body: const CartListSectionWidget(),
+          );
         });
   }
 
@@ -49,6 +50,5 @@ class _CartScreenState extends State<CartScreen> {
     await _provider.fetchProducts();
     await _provider.fetchTotalAmount();
     await _addressProvider.fetchAddressDetails();
-
   }
 }

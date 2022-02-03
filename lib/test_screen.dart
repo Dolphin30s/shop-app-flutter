@@ -9,10 +9,13 @@ import 'package:open_cart/models/payment_modes_model.dart';
 import 'package:open_cart/providers/_mixins.dart';
 import 'package:open_cart/providers/address_provider.dart';
 import 'package:open_cart/providers/base_provider.dart';
+import 'package:open_cart/providers/cart_provider.dart';
+import 'package:open_cart/providers/order_provider.dart';
 import 'package:open_cart/providers/payments_model_provider.dart';
 import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/constants.dart';
 import 'package:open_cart/utils/sized_box_custom.dart';
+import 'package:open_cart/utils/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,13 +29,13 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  late AddressProvider _addressProvider;
+  late CartProvider _cartProvider;
   late PaymentModelsModelProvider _paymentModelsModelProvider;
   AddressModel _value = AddressModel();
   PaymentModesModel _paymentMode = PaymentModesModel();
   @override
   void initState() {
-    _addressProvider = AddressProvider();
+    _cartProvider = CartProvider();
     _paymentModelsModelProvider = PaymentModelsModelProvider();
     Future.microtask(() => _initAsync());
     super.initState();
@@ -46,107 +49,30 @@ class _TestScreenState extends State<TestScreen> {
           ChangeNotifierProvider<_ThisProvider>(
             create: (context) => _ThisProvider(),
           ),
-          ChangeNotifierProvider.value(value: _paymentModelsModelProvider)
+          ChangeNotifierProvider.value(value: _cartProvider)
         ],
         builder: (context, _) {
-          return Scaffold(
-            // backgroundColor: colorFF,
-            body: SingleChildScrollView(
-              child: Column(
+          return Consumer<CartProvider>(builder: (context, provider, _) {
+            return Scaffold(
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer2<AddressProvider, _ThisProvider>(
-                      builder: (context, _addressProvider, _thisProvider, _) {
-                    return SizedBox(
-                      height: 400,
-                      width: double.infinity,
-                      child: ListView.builder(
-                        itemCount: _addressProvider.addressList.length,
-                        itemBuilder: (context, index) {
-                          print(index);
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              tileColor: colorFF,
-                              shape:
-                                  RoundedRectangleBorder(borderRadius: bRC30),
-                              leading: Radio<AddressModel>(
-                                  value: _addressProvider.addressList[index],
-                                  groupValue: _value,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _value = value!;
-                                      _thisProvider.addAddressValue(
-                                          map: _value.toMap());
-                                    });
-                                  }),
-                              title: Text(_addressProvider
-                                  .addressList[index].addressLine1!),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(_addressProvider
-                                      .addressList[index].addressLine1!),
-                                  Text(_addressProvider
-                                      .addressList[index].city!),
-                                  Text(_addressProvider
-                                      .addressList[index].pincode!),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }),
-                  const SBH20(),
-                  Consumer2<PaymentModelsModelProvider, _ThisProvider>(
-                      builder: (context, _paymentsProvider, _thisProvider, _) {
-                    return SizedBox(
-                      height: 300,
-                      width: double.infinity,
-                      child: ListView.builder(
-                        itemCount: _paymentsProvider.paymentModes.length,
-                        itemBuilder: (context, index) {
-                          print('paymentIndex:$index');
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                                tileColor: colorFF,
-                                shape:
-                                    RoundedRectangleBorder(borderRadius: bRC20),
-                                leading: Radio<PaymentModesModel>(
-                                    value:
-                                        _paymentsProvider.paymentModes[index],
-                                    groupValue: _paymentMode,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _paymentMode = value!;
-                                        _thisProvider.addPaymentValue(
-                                            map: _paymentMode.toMap());
-                                      });
-                                    }),
-                                title: Text(_paymentsProvider
-                                    .paymentModes[index].paymentMode!),
-                                trailing: FaIcon(IconData(int.parse(
-                                    _paymentsProvider
-                                        .paymentModes[index].paymentIcon
-                                        .toString())))),
-                          );
-                        },
-                      ),
-                    );
-                  }),
+                  Center(
+                      child: Text(
+                    provider.cartList.first.toMap().toString(),
+                    style: tsAppBarTitle,
+                  ))
                 ],
               ),
-            ),
-          );
+            );
+          });
         });
   }
 
   _initAsync() async {
     // await Future.delayed(const Duration(seconds: 2));
 
-    await _addressProvider.fetchAddressDetails();
+    await _cartProvider.fetchProducts();
     await _paymentModelsModelProvider.fetchPayments();
     _value = context.read<AddressProvider>().addressList[0];
     _paymentMode = context.read<PaymentModelsModelProvider>().paymentModes[0];

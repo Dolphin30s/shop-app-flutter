@@ -110,10 +110,32 @@ TextStyle get tsCFFS20W500 => TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w500,
     );
-TextStyle get tsS20 => const TextStyle(fontSize: 20);
-TextStyle get tsCffFFprimaryS20 =>
-    TextStyle(color: colorFF, fontSize: 20, fontFamily: primaryFont);
-TextStyle get tsCGrey500WBold =>
-    TextStyle(color: colorGrey500, fontWeight: FontWeight.bold);
-TextStyle get tsCDarkGreyWBold =>
-    TextStyle(color: colorDarkGrey, fontWeight: FontWeight.bold);
+TextStyle get tsS20 => const TextStyle(
+      fontSize: 20,
+    );
+TextStyle get tsCffFFprimaryS20 => TextStyle(
+      color: colorFF,
+      fontSize: 20,
+      fontFamily: primaryFont,
+    );
+TextStyle get tsCGrey500WBold => TextStyle(
+      color: colorGrey500,
+      fontWeight: FontWeight.bold,
+    );
+TextStyle get tsCDarkGreyWBold => TextStyle(
+      color: colorDarkGrey,
+      fontWeight: FontWeight.bold,
+    );
+TextStyle get tsCffS15FFprimary => TextStyle(
+      color: colorFF,
+      fontSize: 15,
+      fontFamily: primaryFont,
+    );
+TextStyle get tsCorangeCustomS28 => TextStyle(
+      color: colorOrangeCustom,
+      fontSize: 25,
+    );
+TextStyle get tsCorangeS200Wbold => const TextStyle(
+      fontSize: 200.0,
+      fontWeight: FontWeight.bold,
+    );

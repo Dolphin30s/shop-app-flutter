@@ -43,89 +43,13 @@ class _OrderPreviewScreenState extends State<OrderPreviewScreen> {
               bottomNavigationBar: const _OrderPageBottomNavbarWidget(),
               body: SingleChildScrollView(
                 child: Column(
-                  children: [
-                    const SBH10(),
-                    _OrderSummaryPageProgressTabWidget(
-                      deviceSize: MediaQuery.of(context).size,
-                    ),
-                    const SBH20(),
-                    Consumer<CartProvider>(builder: (context, provider, _) {
-                      return SizedBox(
-                          height: MediaQuery.of(context).size.height / 2,
-                          child: ListView.builder(
-                              itemCount: provider.cartList.length,
-                              itemBuilder: (context, index) {
-                                final value = provider.cartList[index];
-                                // print(
-                                //     "productName : ${provider.cartList[index].productName}");
-                                print('reached here');
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListTile(
-                                    tileColor: colorFF,
-                                    leading: Image.network(
-                                        value.productImage.toString()),
-                                    title: Text(value.productName!),
-                                    subtitle:
-                                        Text(value.productPrice.toString()),
-                                    trailing:
-                                        Text(value.productQuantity.toString()),
-                                  ),
-                                );
-                              }));
-                    }),
-                    const SBH5(),
-                    Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SBH20(),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              'Shipping Address',
-                              style: tsAppBarTitle,
-                            ),
-                          ),
-                          Consumer<OrderProvider>(
-                            builder: (context, provider, _) {
-                              return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height: 100,
-                                    child: ListView.builder(
-                                      itemCount: provider.orderDetails.length,
-                                      itemBuilder: (context, index) => ListTile(
-                                        title: Text(provider
-                                            .orderDetails.first.addressLine1
-                                            .toString()),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(provider
-                                                .orderDetails.first.addressLine2
-                                                .toString()),
-                                            Text(
-                                              provider.orderDetails.first.city
-                                                  .toString(),
-                                            ),
-                                            Text(
-                                              provider
-                                                  .orderDetails.first.pincode
-                                                  .toString(),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ));
-                            },
-                          ),
-                          const SBH10(),
-                        ],
-                      ),
-                    )
+                  children: const [
+                    SBH10(),
+                    _OrderSummaryPageProgressTabWidget(),
+                    SBH20(),
+                    _CartListWidget(),
+                    SBH5(),
+                    _ShippingAddressWidget(),
                   ],
                 ),
               ));
@@ -179,15 +103,12 @@ class _OrderPageBottomNavbarWidget extends StatelessWidget {
 class _OrderSummaryPageProgressTabWidget extends StatelessWidget {
   const _OrderSummaryPageProgressTabWidget({
     Key? key,
-    required this.deviceSize,
   }) : super(key: key);
-
-  final Size deviceSize;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: deviceSize.width / 1.5,
+        width: MediaQuery.of(context).size.width / 1.5,
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -219,5 +140,87 @@ class _OrderSummaryPageProgressTabWidget extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class _ShippingAddressWidget extends StatelessWidget {
+  const _ShippingAddressWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SBH20(),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(
+              'Shipping Address',
+              style: tsAppBarTitle,
+            ),
+          ),
+          Consumer<OrderProvider>(
+            builder: (context, provider, _) {
+              return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      itemCount: provider.orderDetails.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(provider.orderDetails.first.addressLine1
+                              .toString()),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(provider.orderDetails.first.addressLine2
+                                  .toString()),
+                              Text(
+                                provider.orderDetails.first.city.toString(),
+                              ),
+                              Text(
+                                provider.orderDetails.first.pincode.toString(),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ));
+            },
+          ),
+          const SBH10(),
+        ],
+      ),
+    );
+  }
+}
+
+class _CartListWidget extends StatelessWidget {
+  const _CartListWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CartProvider>(builder: (context, provider, _) {
+      return SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: ListView.builder(
+              itemCount: provider.cartList.length,
+              itemBuilder: (context, index) {
+                final value = provider.cartList[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    tileColor: colorFF,
+                    leading: Image.network(value.productImage.toString()),
+                    title: Text(value.productName!),
+                    subtitle: Text(value.productPrice.toString()),
+                    trailing: Text(value.productQuantity.toString()),
+                  ),
+                );
+              }));
+    });
   }
 }

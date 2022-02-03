@@ -25,6 +25,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   late PaymentModelsModelProvider _paymentsProvider;
   late OrderProvider _orderProvider;
+  PaymentModesModel _value = PaymentModesModel();
 
   @override
   void initState() {
@@ -55,6 +56,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Navigator.of(context).pop();
               },
               onTapRight: () {
+                OrderProvider().addOrderId();
+                OrderProvider().confirmOrder(
+                    map: context.read<OrderProvider>().orderDetails.first.toMap());
                 Navigator.of(context)
                     .pushReplacementNamed(OrderPlacedScreen.route);
               },
@@ -68,25 +72,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     const SBH10(),
                     _PaymentsPageProgressTabWidget(deviceSize: deviceSize),
                     const SBH20(),
-                    // _PaymentOptionsWidget(),
-                    Consumer<PaymentModelsModelProvider>(
-                        builder: (context, provider, _) {
+                    Consumer2<PaymentModelsModelProvider, OrderProvider>(
+                        builder:
+                            (context, _paymentModesProvider, _thisProvider, _) {
                       return SizedBox(
-                        width: deviceSize.width,
-                        height: deviceSize.height / 2,
+                        height: 400,
+                        width: double.infinity,
                         child: ListView.builder(
-                            itemCount: provider.paymentModes.length,
-                            itemBuilder: (context, index) {
-                              PaymentModesModel paymentModel =
-                                  provider.paymentModes[index];
-                              return _PaymentOptionWidget(
-                                text: paymentModel.paymentMode.toString(),
-                                icon: IconDataBrands(int.parse(
-                                    paymentModel.paymentIcon.toString())),
-                                function: () {},
-                                index: index,
-                              );
-                            }),
+                          itemCount: _paymentModesProvider.paymentModes.length,
+                          itemBuilder: (context, index) {
+                            print(index);
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                tileColor: colorFF,
+                                shape:
+                                    RoundedRectangleBorder(borderRadius: bRC30),
+                                leading: Radio<PaymentModesModel>(
+                                    value: _paymentModesProvider
+                                        .paymentModes[index],
+                                    groupValue: _value,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _value = value!;
+                                        _thisProvider.addPaymentValue(
+                                            map: _value.toMap());
+                                      });
+                                    }),
+                                title: Text(
+                                  _paymentModesProvider
+                                      .paymentModes[index].paymentMode!,
+                                  style: tsCDarkGreyWBold,
+                                ),
+                                trailing: FaIcon(IconData(int.parse(
+                                    _paymentModesProvider
+                                        .paymentModes[index].paymentIcon
+                                        .toString()))),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     }),
                     const _TotalPaymentDetailsWidget()
@@ -101,6 +126,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   _initAsync() async {
     await _paymentsProvider.fetchPayments();
     await _orderProvider.fetchOrderDetails();
+    _value = _paymentsProvider.paymentModes[0];
   }
 }
 

@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_cart/providers/cart_provider.dart';
 import 'package:open_cart/providers/favourites_provider.dart';
-import 'package:open_cart/providers/order_provider.dart';
 import 'package:open_cart/utils/colors.dart';
 import 'package:open_cart/utils/dialog_boxes.dart';
 import 'package:open_cart/widgets/bottom_navbar_button_widget.dart';
